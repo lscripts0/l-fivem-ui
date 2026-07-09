@@ -85,8 +85,8 @@ Config.TxAdmin = {
 
 -- Frontend sounds played on menu actions.
 -- Set enabled to false to mute everything, or swap name/ref per action.
--- GTA built-in frontend sounds (no audio files needed), same house set the other
--- lscripts resources use. Called as PlaySoundFrontend(-1, name, ref, true).
+-- GTA built-in frontend sounds (no audio files needed).
+-- Called as PlaySoundFrontend(-1, name, ref, true).
 Config.Sounds = {
     enabled = true,
     open   = { name = 'SELECT', ref = 'HUD_FRONTEND_DEFAULT_SOUNDSET' },
@@ -96,9 +96,9 @@ Config.Sounds = {
     change = { name = 'NAV_LEFT_RIGHT', ref = 'HUD_FRONTEND_DEFAULT_SOUNDSET' },
     select = { name = 'SELECT', ref = 'HUD_FRONTEND_DEFAULT_SOUNDSET' },
     -- Set an entry to false to mute just that action.
-    notify = { name = 'CHECKPOINT_NORMAL', ref = 'HUD_MINI_GAME_SOUNDSET' },
+    notify = { name = 'ATM_WINDOW', ref = 'HUD_FRONTEND_DEFAULT_SOUNDSET' },
     notifyHide = false,
-    announce = { name = 'SELECT', ref = 'HUD_FRONTEND_DEFAULT_SOUNDSET' },
+    announce = { name = 'CHALLENGE_UNLOCKED', ref = 'HUD_AWARDS' },
     announceHide = false,
     warn = { name = 'ERROR', ref = 'HUD_FRONTEND_DEFAULT_SOUNDSET' }
 }
