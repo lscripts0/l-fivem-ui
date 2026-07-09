@@ -585,28 +585,20 @@ end
 
 local progressActive = false
 local progressToken = 0
-local progressOnCancel = nil
 
 local function cancelProgress()
     if not progressActive then return end
     progressActive = false
     progressToken = progressToken + 1
     SendNUIMessage({ action = 'progress:stop' })
-    local onCancel = progressOnCancel
-    progressOnCancel = nil
-    if onCancel then
-        pcall(onCancel)
-    end
 end
 
-local function startProgress(data, duration, onComplete, onCancel)
+local function startProgress(data, duration)
     local label, position, progressType
     local disableMove = false
     if type(data) == 'table' then
         label = data.label
         duration = data.duration
-        onComplete = data.onComplete
-        onCancel = data.onCancel
         position = data.position
         progressType = data.type
         disableMove = data.disableMove == true
@@ -614,16 +606,9 @@ local function startProgress(data, duration, onComplete, onCancel)
         label = data
     end
     if type(duration) ~= 'number' or duration <= 0 then return false end
-    local awaitPromise = nil
-    if type(data) == 'table' and onComplete == nil and onCancel == nil then
-        awaitPromise = promise.new()
-        onComplete = function() awaitPromise:resolve(true) end
-        onCancel = function() awaitPromise:resolve(false) end
-    end
     progressToken = progressToken + 1
     local token = progressToken
     progressActive = true
-    progressOnCancel = onCancel
     SendNUIMessage({
         action = 'progress:start',
         label = label,
@@ -647,15 +632,8 @@ local function startProgress(data, duration, onComplete, onCancel)
         if not progressActive or progressToken ~= token then return end
         progressActive = false
         progressToken = progressToken + 1
-        progressOnCancel = nil
         SendNUIMessage({ action = 'progress:stop' })
-        if onComplete then
-            pcall(onComplete)
-        end
     end)
-    if awaitPromise then
-        return Citizen.Await(awaitPromise)
-    end
     return true
 end
 

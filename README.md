@@ -433,29 +433,24 @@ exports['l-fivem-ui']:IsObjectivesOpen()
 
 ## Progress
 
-```lua
-exports['l-fivem-ui']:Progress('Repairing vehicle', 5000, onComplete, onCancel)  -- short form
+Display only: it shows a bar or circle for the duration and hides itself. No callbacks, it does not block, your script keeps running and handles its own timing.
 
-local finished = exports['l-fivem-ui']:Progress({  -- no callbacks: blocks, true | false on cancel
-    label = 'Repairing vehicle',
-    duration = 5000
-})
+```lua
+exports['l-fivem-ui']:Progress('Repairing vehicle', 5000)  -- short form
 
 exports['l-fivem-ui']:Progress({
     label = 'Repairing vehicle',
     duration = 5000,
     type = 'bar',                  -- 'bar' (segmented) | 'circle'
     position = 'bottom-center',    -- optional, overrides config (8 spots like the text ui)
-    disableMove = false,           -- optional, true blocks movement/sprint/jump while running
-    onComplete = function() end,   -- fires on completion
-    onCancel = function() end      -- fires when stopped early via CancelProgress
+    disableMove = false            -- optional, true blocks movement/sprint/jump while running
 })
 
-exports['l-fivem-ui']:CancelProgress()
+exports['l-fivem-ui']:CancelProgress()   -- stop it early
 exports['l-fivem-ui']:IsProgressActive()
 ```
 
-The bar shows the label on the left and the percentage on the right, with segments that fill one by one; the circle type shows a ring with the percentage inside and the label below. There is no in-game cancel key or cancel button: the bar runs to completion (`onComplete`) unless a script stops it early with `CancelProgress` (`onCancel`). Segment count and default position are set in `config.lua`.
+The bar shows the label on the left and the percentage on the right, with segments that fill one by one; the circle type shows a ring with the percentage inside and the label below. Segment count and default position are set in `config.lua`.
 
 ## Chat
 
