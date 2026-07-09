@@ -4,7 +4,7 @@ Config = {}
 Config.Locale = 'en'
 
 -- Check GitHub for a newer release on server start and print the result to the server console.
-Config.VersionCheck = false
+Config.VersionCheck = true
 
 -- The chat built into this ui (input only, replaces the default cfx chat resource).
 -- Disabled by default: l-ui already owns the server chat (provide 'chat') on this
