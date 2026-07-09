@@ -93,11 +93,11 @@ export default function Announce({ data, onDone }: AnnounceProps) {
               position: 'relative',
               fontSize: '0.75rem',
               fontStyle: 'italic',
-              color: colors.accent,
+              color: colors.textDim,
               mb: '0.25rem'
             }}
           >
-            {rich(data.subtitle, colors.text)}
+            {rich(data.subtitle, colors.accent)}
           </Typography>
         </>
       )}

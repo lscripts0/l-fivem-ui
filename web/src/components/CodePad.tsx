@@ -34,13 +34,13 @@ const buttonSx = (accent: string, glow: string): SxProps => ({
 })
 
 const keySx: SxProps = {
-  width: '2.9rem',
-  height: '2.4rem',
+  width: '2.4rem',
+  height: '1.95rem',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   fontFamily: fonts.display,
-  fontSize: '1.35rem',
+  fontSize: '1.1rem',
   color: colors.text,
   border: `var(--hairline) solid ${colors.panelEdge}`,
   borderRadius: '0.15rem',
@@ -125,8 +125,8 @@ export default function CodePad({ data, onDone }: CodePadProps) {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          px: '1.1rem',
-          py: '0.8rem',
+          px: '2.2rem',
+          py: '0.9rem',
           isolation: 'isolate',
           ...hexPanel
         }}
@@ -151,15 +151,15 @@ export default function CodePad({ data, onDone }: CodePadProps) {
             </Box>
           </>
         )}
-        <Box sx={{ display: 'flex', gap: '0.35rem', my: '0.5rem' }}>
+        <Box sx={{ display: 'flex', gap: '0.4rem', my: '0.55rem' }}>
           {Array.from({ length }, (_, index) => {
             const active = index === code.length
             return (
               <Box
                 key={index}
                 sx={{
-                  width: '1.7rem',
-                  height: '2.2rem',
+                  width: '1.5rem',
+                  height: '1.9rem',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -169,14 +169,14 @@ export default function CodePad({ data, onDone }: CodePadProps) {
                   boxShadow: active ? colors.innerGlow : 'none'
                 }}
               >
-                <Typography sx={{ fontFamily: fonts.display, fontSize: '1.35rem', color: colors.text }}>
+                <Typography sx={{ fontFamily: fonts.display, fontSize: '1.15rem', color: colors.text }}>
                   {code[index] ?? ''}
                 </Typography>
               </Box>
             )
           })}
         </Box>
-        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, auto)', gap: '0.35rem' }}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, auto)', gap: '0.45rem' }}>
           {keys.map((digit) => (
             <ButtonBase key={digit} onClick={() => press(digit)} sx={keySx}>
               {digit}
