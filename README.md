@@ -22,16 +22,16 @@ All colors live in `html/theme.css` as css variables: text, panel background, bo
 
 ```lua
 exports['l-fivem-ui']:OpenMenu({
-    title = 'General Store',
-    subtitle = 'Valentine',
+    title = '24/7 Store',
+    subtitle = 'Los Santos',
     position = 'right',         -- 'left' | 'right'
     items = {
-        { id = 'buy', label = 'Buy beans', icon = 'fa-solid fa-basket-shopping', rightLabel = '$0.75', description = 'A can of beans.',
-            onSelect = function(item) print('bought beans') end },
+        { id = 'buy', label = 'Buy water', icon = 'fa-solid fa-basket-shopping', rightLabel = '$1.50', description = 'A bottle of water.',
+            onSelect = function(item) print('bought water') end },
         { id = 'ammo', label = 'Ammo', type = 'options', options = { 'Regular', 'Express' }, index = 1,
             onChange = function(item) print(item.options[item.index]) end },
         { id = 'amount', label = 'Amount', type = 'slider', min = 1, max = 10, step = 1, value = 1 },
-        { id = 'wrap', label = 'Gift wrap', type = 'checkbox', checked = false },
+        { id = 'wrap', label = 'Bag it', type = 'checkbox', checked = false },
         { id = 'more', label = 'More goods', arrow = true },
         { id = 'locked', label = 'Sold out', disabled = true }
     },
@@ -61,12 +61,12 @@ An npc dialog panel at the bottom of the screen: npc name, spoken line and a lis
 
 ```lua
 exports['l-fivem-ui']:OpenConversation({
-    name = 'Foreman Dawson',
-    text = 'Looking for honest work?',
+    name = 'Mechanic',
+    text = 'What can I do for you?',
     choices = {
-        { id = 'accept', label = 'Sign me up.',
-            onSelect = function(choice) print('hired') end },
-        { id = 'pay', label = 'How much does it pay?' },
+        { id = 'repair', label = 'Repair my vehicle',
+            onSelect = function(choice) print('repairing') end },
+        { id = 'upgrade', label = 'Upgrade the engine' },
         { id = 'leave', label = 'Not interested.' }
     },
     onSelect = function(choice) print(choice.id) end,
@@ -89,9 +89,9 @@ exports['l-fivem-ui']:OpenRadialMenu({
         { id = 'greet', label = 'Greet', icon = 'handshake',
             onSelect = function(item) print('greeted') end },
         { id = 'rob', label = 'Rob', icon = 'sack-dollar' },
-        { id = 'horse', label = 'Horse', icon = 'horse', items = {
-            { id = 'feed', label = 'Feed', icon = 'wheat-awn' },
-            { id = 'brush', label = 'Brush', icon = 'brush' }
+        { id = 'vehicle', label = 'Vehicle', icon = 'car', items = {
+            { id = 'engine', label = 'Engine', icon = 'power-off' },
+            { id = 'doors', label = 'Doors', icon = 'car-side' }
         } }
     },
     onSelect = function(item) print(item.id) end,
@@ -146,7 +146,7 @@ The short form `ShowHoldTextUI('Hold', 'E', 38, 1500, onComplete, position)` wor
 ```lua
 exports['l-fivem-ui']:Notify({
     message = 'Money received',
-    type = 'success',              -- 'info' | 'success' | 'error' | 'support', default 'info'
+    type = 'success',              -- 'info' | 'success' | 'warning' | 'error' | 'support', default 'info'
     duration = 6000,               -- optional ms, defaults to config
     title = 'Store',               -- optional line above the message
     position = 'top-right'         -- optional, overrides the config position
@@ -155,21 +155,21 @@ exports['l-fivem-ui']:Notify({
 exports['l-fivem-ui']:Notify('Money received', 'success', 6000, 'Store')  -- short form
 ```
 
-Notifications stack and slide in on a painted panel, with an icon per type and a slim vertical bar next to the icon that drains with the remaining display time. A sound plays when they appear and another when they fade out (both set in `config.lua`, same for the announce banner). Stack position and default duration are set in `config.lua`.
+Notifications stack and slide in on a dark panel, with an icon per type and a slim vertical bar next to the icon that drains with the remaining display time. A sound plays when they appear and another when they fade out (both set in `config.lua`, same for the announce banner). Stack position and default duration are set in `config.lua`.
 
 ## Announce
 
 ```lua
 exports['l-fivem-ui']:Announce({
-    title = 'Valentine',
-    subtitle = 'A quiet little town',  -- optional
+    title = 'Los Santos',
+    subtitle = 'Welcome to the city',  -- optional
     duration = 8000                    -- optional ms, defaults to config
 })
 
-exports['l-fivem-ui']:Announce('Valentine', 'A quiet little town', 8000)  -- short form
+exports['l-fivem-ui']:Announce('Los Santos', 'Welcome to the city', 8000)  -- short form
 ```
 
-A big centered panel at the top edge of the screen that fades in and out, for town arrivals, job starts and similar moments.
+A big centered panel at the top edge of the screen that fades in and out, for zone arrivals, event starts and similar moments.
 
 ## Warn
 
@@ -191,7 +191,7 @@ Centered dialogs with a dimmed backdrop. The player is locked while one is open;
 
 ```lua
 exports['l-fivem-ui']:Alert({
-    title = 'Delete horse',
+    title = 'Delete vehicle',
     message = 'Are you sure?',
     submitLabel = 'Delete',                   -- optional, default 'Confirm'
     cancelLabel = 'Keep',                     -- optional, default 'Cancel', false hides the button
@@ -200,19 +200,19 @@ exports['l-fivem-ui']:Alert({
 })
 
 local confirmed = exports['l-fivem-ui']:Alert({  -- true | false
-    title = 'Delete horse',
+    title = 'Delete vehicle',
     message = 'Are you sure?'
 })
 
 exports['l-fivem-ui']:Alert({                  -- one button, escape does nothing
-    title = 'Tutorial',
-    message = 'Welcome to the training grounds.',
+    title = 'Welcome',
+    message = 'Press F1 to open the help menu.',
     submitLabel = 'Continue',
     cancelLabel = false
 })
 
 exports['l-fivem-ui']:Input({
-    title = 'Horse name',
+    title = 'Character name',
     label = 'Name',                           -- optional
     type = 'text',                            -- 'text' | 'number' | 'password' | 'textarea'
     placeholder = 'Enter a name',
@@ -223,30 +223,30 @@ exports['l-fivem-ui']:Input({
 })
 
 local name = exports['l-fivem-ui']:Input({       -- string | nil on cancel
-    title = 'Horse name',
+    title = 'Character name',
     label = 'Name',
     required = true
 })
 
 exports['l-fivem-ui']:Form({
-    title = 'Register horse',
+    title = 'Register vehicle',
     submitLabel = 'Save',
     fields = {
-        { id = 'name', label = 'Name', type = 'text', placeholder = 'Horse name', required = true },
-        { id = 'age', label = 'Age', type = 'number', min = 0, max = 30, value = 4 },
-        { id = 'gender', label = 'Gender', type = 'select', options = { 'Male', 'Female' }, index = 1 },
-        { id = 'volume', label = 'Volume', type = 'slider', min = 0, max = 100, step = 5, value = 40 },
+        { id = 'plate', label = 'Plate', type = 'text', placeholder = 'Enter plate', required = true },
+        { id = 'year', label = 'Year', type = 'number', min = 1950, max = 2024, value = 2020 },
+        { id = 'color', label = 'Color', type = 'select', options = { 'Black', 'White', 'Red' }, index = 1 },
+        { id = 'tint', label = 'Window tint', type = 'slider', min = 0, max = 100, step = 5, value = 40 },
         { id = 'notes', label = 'Notes', type = 'textarea' },
         { id = 'insured', label = 'Insured', type = 'checkbox', checked = true }
     },
     onSubmit = function(values)
-        print(values.name, values.age, values.gender, values.insured)
+        print(values.plate, values.year, values.color, values.insured)
     end,
     onCancel = function() end
 })
 
 local values = exports['l-fivem-ui']:Form({      -- table | nil on cancel
-    title = 'Register horse',
+    title = 'Register vehicle',
     fields = {
         { id = 'name', label = 'Name', type = 'text', required = true }
     }
@@ -315,7 +315,7 @@ local ok = exports['l-fivem-ui']:Skillbar({
 })
 
 local ok = exports['l-fivem-ui']:Sequence({
-    label = 'Calm the horse',
+    label = 'Hack the terminal',
     length = 6,          -- number of letters to type in order
     time = 6000          -- ms before it fails
 })
@@ -372,7 +372,7 @@ The short form `ShowKeyLegend(entries, position)` works too.
 
 ## Countdown
 
-A countdown in mm:ss at the top center of the screen, for races, duels and events. It slides in, counts down, shows the end word for a moment and slides out again. Fire and forget, no callbacks and no sounds: your script decides when things start, the countdown is just the visual.
+A countdown in mm:ss at the top center of the screen, for races and events. It slides in, counts down, shows the end word for a moment and slides out again. Fire and forget, no callbacks and no sounds: your script decides when things start, the countdown is just the visual.
 
 ```lua
 exports['l-fivem-ui']:Countdown({
@@ -388,16 +388,16 @@ exports['l-fivem-ui']:IsCountdownActive()
 
 ## Objectives
 
-A small task tracker panel for jobs and heists: a title, a list of objectives with diamond checkboxes, ticked off one by one from your script.
+A small task tracker panel for jobs and heists: a title, a list of objectives with square checkboxes, ticked off one by one from your script.
 
 ```lua
 exports['l-fivem-ui']:ShowObjectives({
-    title = 'Stagecoach Robbery',
+    title = 'Store Robbery',
     position = 'right-center',        -- optional, defaults to Config.ObjectivesPosition
     entries = {
-        { id = 'steal', label = 'Steal the stagecoach' },
-        { id = 'lose', label = 'Lose the law' },
-        { id = 'fence', label = 'Deliver it to the fence', done = false }
+        { id = 'steal', label = 'Grab the cash' },
+        { id = 'lose', label = 'Lose the cops' },
+        { id = 'drop', label = 'Reach the drop-off', done = false }
     }
 })
 
@@ -409,15 +409,15 @@ exports['l-fivem-ui']:IsObjectivesOpen()
 ## Progress
 
 ```lua
-exports['l-fivem-ui']:Progress('Chopping wood', 5000, onComplete, onCancel)  -- short form
+exports['l-fivem-ui']:Progress('Repairing vehicle', 5000, onComplete, onCancel)  -- short form
 
 local finished = exports['l-fivem-ui']:Progress({  -- no callbacks: blocks, true | false on cancel
-    label = 'Chopping wood',
+    label = 'Repairing vehicle',
     duration = 5000
 })
 
 exports['l-fivem-ui']:Progress({
-    label = 'Chopping wood',
+    label = 'Repairing vehicle',
     duration = 5000,
     type = 'bar',                  -- 'bar' (segmented) | 'circle'
     position = 'bottom-center',    -- optional, overrides config (8 spots like the text ui)
@@ -446,7 +446,7 @@ Everything is triggered through exports only. On the server the exports take the
 
 ```lua
 exports['l-fivem-ui']:Notify(playerId, { message = 'Money received', type = 'success', title = 'Store' })
-exports['l-fivem-ui']:Announce(-1, { title = 'Valentine', subtitle = 'A quiet little town' })
+exports['l-fivem-ui']:Announce(-1, { title = 'Los Santos', subtitle = 'Welcome to the city' })
 exports['l-fivem-ui']:Warn(playerId, { message = 'You broke the rules.', author = 'Admin' })
 ```
 
@@ -457,10 +457,10 @@ exports['l-fivem-ui']:Countdown(-1, { seconds = 3, text = 'GO' })
 exports['l-fivem-ui']:CancelCountdown(-1)
 
 exports['l-fivem-ui']:ShowObjectives(playerId, {
-    title = 'Stagecoach Robbery',
+    title = 'Store Robbery',
     entries = {
-        { id = 'steal', label = 'Steal the stagecoach' },
-        { id = 'lose', label = 'Lose the law' }
+        { id = 'steal', label = 'Grab the cash' },
+        { id = 'lose', label = 'Lose the cops' }
     }
 })
 exports['l-fivem-ui']:SetObjective(playerId, 'steal', true)
