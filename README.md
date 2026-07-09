@@ -258,9 +258,9 @@ exports['l-fivem-ui']:IsDialogOpen()
 
 `values` is keyed by field id: strings for text fields, numbers for number fields (clamped to min/max) and sliders, booleans for checkboxes, the selected option string for selects. Required fields highlight and block the submit while empty.
 
-## Pin Pad
+## Pin Pad and Code Pad
 
-A combination lock for safes, door codes and similar: the digits sit in a row and each one is turned up or down with the arrows above and below it, like the dials on a safe. Every digit starts at 0. Works with the mouse and the keyboard (arrow keys turn and move, number keys set a digit directly, enter confirms, escape cancels). Same two call styles as the dialogs.
+Two ways to enter a code. `PinPad` is a combination lock: the digits sit in a row and each one is turned up or down with the arrows above and below it, like the dials on a safe. `CodePad` is a numeric keypad: a display row plus 1-9 / 0 buttons with clear and backspace, for door codes and keypads. Both work with mouse and keyboard (number keys type or set a digit, enter confirms, escape cancels), share the same options and both come back as a string so leading zeros survive. Same two call styles as the dialogs.
 
 ```lua
 exports['l-fivem-ui']:PinPad({
@@ -270,13 +270,20 @@ exports['l-fivem-ui']:PinPad({
     onCancel = function() end
 })
 
-local code = exports['l-fivem-ui']:PinPad({ title = 'Safe', length = 4 })  -- string | nil on cancel
+exports['l-fivem-ui']:CodePad({    -- numeric keypad instead of the dials
+    title = 'Door Code',
+    length = 4,
+    onSubmit = function(code) print(code) end,
+    onCancel = function() end
+})
 
-exports['l-fivem-ui']:ClosePinPad()
+local code = exports['l-fivem-ui']:CodePad({ title = 'Door Code', length = 4 })  -- string | nil on cancel
+
+exports['l-fivem-ui']:ClosePinPad()   -- closes either one
 exports['l-fivem-ui']:IsPinPadOpen()
 ```
 
-The code comes back as a string so leading zeros survive.
+`CodePad` is a shortcut for `PinPad({ variant = 'keypad' })`; both use the same close and state exports.
 
 ## Key Confirm
 

@@ -57,7 +57,7 @@ export default function TextUI({ data, hiding }: TextUIProps) {
           </Typography>
         </Box>
       )}
-      <Typography sx={{ fontSize: '0.82rem', color: colors.accent, whiteSpace: 'nowrap' }}>{rich(data.text, colors.text)}</Typography>
+      <Typography sx={{ fontSize: '0.82rem', color: colors.text, whiteSpace: 'nowrap' }}>{rich(data.text, colors.accent)}</Typography>
     </Box>
   )
 }

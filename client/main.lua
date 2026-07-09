@@ -759,6 +759,7 @@ local function openPinPad(data)
         action = 'pinpad:open',
         title = data.title,
         length = data.length or 4,
+        variant = data.variant == 'keypad' and 'keypad' or 'dial',
         submitLabel = data.submitLabel or L('confirm'),
         cancelLabel = data.cancelLabel or L('cancel')
     })
@@ -1076,6 +1077,11 @@ exports('OpenConversation', openConversation)
 exports('CloseConversation', function() closeConversation(true) end)
 exports('IsConversationOpen', function() return currentConversation ~= nil end)
 exports('PinPad', openPinPad)
+exports('CodePad', function(data)
+    if type(data) ~= 'table' then data = {} end
+    data.variant = 'keypad'
+    return openPinPad(data)
+end)
 exports('ClosePinPad', closePinPad)
 exports('IsPinPadOpen', function() return currentPinPad ~= nil end)
 exports('OpenRadialMenu', openRadialMenu)

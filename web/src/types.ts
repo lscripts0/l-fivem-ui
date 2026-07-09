@@ -130,6 +130,7 @@ export interface ConversationData {
 export interface PinPadData {
   title?: string
   length?: number
+  variant?: 'dial' | 'keypad'
   submitLabel?: string
   cancelLabel?: string
 }

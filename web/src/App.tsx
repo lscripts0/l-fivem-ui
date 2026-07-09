@@ -34,6 +34,7 @@ import KeyLegend from './components/KeyLegend'
 import Minigame from './components/Minigame'
 import Conversation from './components/Conversation'
 import PinPad from './components/PinPad'
+import CodePad from './components/CodePad'
 import Radial from './components/Radial'
 import Countdown from './components/Countdown'
 import Objectives from './components/Objectives'
@@ -234,7 +235,7 @@ export default function App() {
   useNuiEvent('conversation:close', () => setConversation(null))
   useNuiEvent<PinPadData>('pinpad:open', (data) =>
     setPinPad((prev) => ({
-      data: { title: data.title, length: data.length, submitLabel: data.submitLabel, cancelLabel: data.cancelLabel },
+      data: { title: data.title, length: data.length, variant: data.variant, submitLabel: data.submitLabel, cancelLabel: data.cancelLabel },
       nonce: (prev?.nonce ?? 0) + 1
     }))
   )
@@ -338,7 +339,9 @@ export default function App() {
       {minigame && <Minigame key={minigame.nonce} data={minigame.data} onDone={() => setMinigame(null)} />}
       {keyLegend && <KeyLegend data={keyLegend} hiding={keyLegendHiding} />}
       {conversation && <Conversation key={conversation.nonce} data={conversation.data} />}
-      {pinPad && <PinPad key={pinPad.nonce} data={pinPad.data} onDone={() => setPinPad(null)} />}
+      {pinPad && (pinPad.data.variant === 'keypad'
+        ? <CodePad key={pinPad.nonce} data={pinPad.data} onDone={() => setPinPad(null)} />
+        : <PinPad key={pinPad.nonce} data={pinPad.data} onDone={() => setPinPad(null)} />)}
       {radial && <Radial key={radial.nonce} data={radial.data} />}
       {countdown && <Countdown key={countdown.nonce} data={countdown.data} hiding={countdownHiding} />}
       {objectives && <Objectives data={objectives} hiding={objectivesHiding} />}
