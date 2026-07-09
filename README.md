@@ -453,9 +453,9 @@ The bar shows the label on the left and the percentage on the right, with segmen
 
 ## Chat
 
-An input only replacement for the default cfx chat resource: players get the command line, but chat messages are never rendered on screen, the hud stays clean. Remove `ensure chat` (and `ensure chat-theme-gtao`) from your server.cfg, l-fivem-ui takes over. `Config.Chat = false` disables the built in chat of this resource entirely.
+The default cfx chat, reskinned to the hud style: only the input line shows, the message window stays hidden so the hud stays clean. The resource has `provide 'chat'`, so remove `ensure chat` (and any chat theme) from your server.cfg and this takes over. `Config.Chat = false` disables it entirely (set it to false if another resource owns the chat).
 
-All standard chat events are still accepted, so txAdmin, ESX and other resources need no changes; incoming messages are simply not displayed: `chat:addMessage`, `chat:addSuggestion(s)`, `chat:removeSuggestion`, `chat:addTemplate`, `chat:addMode`/`chat:removeMode`, `chat:clear`, the `chatMessage` server event, `_chat:messageEntered` and the `/say` command. The server exports `addChatMessage(target, message)`, `registerMessageHook(fn)` and `registerMode(data)` mirror the original chat exports (only `exports.chat:addMessage` callers must switch to `exports['l-fivem-ui']:addChatMessage`).
+It is a drop in replacement: all the standard chat events and exports work unchanged, so txAdmin, ESX and other resources need no changes. `chat:addMessage`, `chat:addSuggestion(s)`, `chat:removeSuggestion`, `chat:addTemplate`, `chat:addMode`/`chat:removeMode`, `chat:clear`, the `chatMessage` server event, `_chat:messageEntered` and the `/say` command all behave like the stock chat, and the exports keep their original names (`exports['l-fivem-ui']:addMessage`, `registerMessageHook`, `registerMode`).
 
 Usage: press T to open, enter sends, escape closes. Arrow up/down cycles the input history, tab completes command suggestions, page up/down switches chat modes when a resource registered any.
 

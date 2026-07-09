@@ -810,6 +810,7 @@ local function closeRadialMenu(fireCallback)
     if not currentRadial then return end
     local radial = currentRadial
     currentRadial = nil
+    LUIRadialOpen = false
     SendNUIMessage({ action = 'radial:close' })
     SetNuiFocus(false, false)
     playSound('close')
@@ -826,6 +827,7 @@ local function openRadialMenu(data)
         onSelect = data.onSelect,
         onClose = data.onClose
     }
+    LUIRadialOpen = true
     sendRadialLevel()
     SetNuiFocus(true, true)
     playSound('open')
@@ -852,6 +854,7 @@ RegisterNUICallback('radial:select', function(data, cb)
     end
     local radial = currentRadial
     currentRadial = nil
+    LUIRadialOpen = false
     SendNUIMessage({ action = 'radial:close' })
     SetNuiFocus(false, false)
     playSound('select')
@@ -1140,5 +1143,6 @@ end)
 
 AddEventHandler('onResourceStop', function(resource)
     if resource ~= GetCurrentResourceName() then return end
+    LUIRadialOpen = false
     SetNuiFocus(false, false)
 end)

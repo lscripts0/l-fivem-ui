@@ -5,9 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./theme.css" />
     <title>l-fivem-ui</title>
+    <script>
+      (function () {
+        var host = location.hostname.replace(/^cfx-nui-/, '') || 'l-fivem-ui'
+        var base = 'https://' + host + '/'
+        var open = XMLHttpRequest.prototype.open
+        XMLHttpRequest.prototype.open = function (method, url) {
+          if (typeof url === 'string') url = url.replace('http://chat/', base)
+          return open.apply(this, [method, url].concat([].slice.call(arguments, 2)))
+        }
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <div id="app"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      (function () {
+        function css(href) {
+          var l = document.createElement('link')
+          l.rel = 'stylesheet'
+          l.href = href
+          document.head.appendChild(l)
+        }
+        css('vendor/flexboxgrid.6.3.1.min.css')
+        css('vendor/animate.3.5.2.min.css')
+        css('chat.css')
+        var s = document.createElement('script')
+        s.src = 'chat.js'
+        s.defer = true
+        document.body.appendChild(s)
+      })()
+    </script>
+    <script>
+      (function () {
+        function bind() {
+          var inner = document.querySelector('.chat-input > div.input')
+          if (!inner) return requestAnimationFrame(bind)
+          var outer = inner.parentElement
+          function sync() { outer.classList.toggle('lc-open', inner.style.display !== 'none') }
+          sync()
+          new MutationObserver(sync).observe(inner, { attributes: true, attributeFilter: ['style'] })
+        }
+        bind()
+      })()
+    </script>
+    <script>
+      (function () {
+        function releaseFocus() {
+          try {
+            var x = new XMLHttpRequest()
+            x.open('POST', 'http://chat/chatResult', true)
+            x.setRequestHeader('Content-Type', 'application/json; charset=UTF-8')
+            x.send(JSON.stringify({ canceled: true }))
+          } catch (e) {}
+        }
+        window.addEventListener('keydown', function (e) {
+          if (e.key !== 'Escape' && e.keyCode !== 27 && e.which !== 27) return
+          if (!document.querySelector('.chat-input.lc-open')) return
+          e.preventDefault()
+          var ta = document.querySelector('.chat-input textarea')
+          if (ta) {
+            ta.value = ''
+            ta.dispatchEvent(new Event('input', { bubbles: true }))
+            ta.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', code: 'Enter', keyCode: 13, which: 13, bubbles: true }))
+          }
+          releaseFocus()
+        }, true)
+      })()
+    </script>
   </body>
 </html>

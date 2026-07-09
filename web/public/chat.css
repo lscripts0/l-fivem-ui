@@ -1,0 +1,267 @@
+/* ============================================================================
+   l-chat — lscripts house-style skin of the cfx default chat
+   ----------------------------------------------------------------------------
+   Forked from the Cfx.re system "chat" resource and reskinned to the lscripts
+   HUD design language. Functionality is stock; only the NUI look changed.
+
+   ACCENT lives in :root below — change it and just restart the resource (this
+   is a plain static stylesheet, no build step). Keep --accent-rgb in sync with
+   --accent (used for rgba() glows). See the lscripts design-system memory.
+
+   Fonts are self-hosted (Rajdhani + Share Tech Mono) under
+   /html/vendor/fonts/ — no external/Google-Fonts links.
+   ========================================================================== */
+
+:root {
+  --accent: #2CB0FD;
+  --accent-soft: #6cc5fd;
+  --accent-rgb: 44, 176, 253;
+
+  --panel-bg: rgba(7, 7, 7, 0.93);
+  --input-bg: rgba(7, 7, 7, 0.93);     /* #070707ED — same shell as house dialogs */
+  --border: rgba(255, 255, 255, 0.15); /* house dialog border colour */
+  --inset-glow: 0 0 1.7vh rgba(255, 255, 255, 0.15) inset; /* #ffffff26 inset */
+  --text: #ffffff;
+  --text-dim: rgba(255, 255, 255, 0.5);
+  --radius: 0.5vh;                     /* ≈4px, house card radius */
+}
+
+/* ---- self-hosted house fonts ------------------------------------------- */
+@font-face { font-family: 'Rajdhani'; font-style: normal; font-weight: 300; font-display: swap;
+  src: url('/html/vendor/fonts/rajdhani-latin-300-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Rajdhani'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('/html/vendor/fonts/rajdhani-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Rajdhani'; font-style: normal; font-weight: 500; font-display: swap;
+  src: url('/html/vendor/fonts/rajdhani-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Rajdhani'; font-style: normal; font-weight: 600; font-display: swap;
+  src: url('/html/vendor/fonts/rajdhani-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Rajdhani'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('/html/vendor/fonts/rajdhani-latin-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Share Tech Mono'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('/html/vendor/fonts/share-tech-mono-latin-400-normal.woff2') format('woff2'); }
+
+/* ---- message text colours (functional — names map to chat color codes) -- */
+.color-0{color: #ffffff;}
+.color-1{color: #ff4646;}   /* aligned with HUD red  */
+.color-2{color: #afff48;}   /* aligned with HUD green */
+.color-3{color: #ffbb33;}
+.color-4{color: #2CB0FD;}   /* aligned with house accent */
+.color-5{color: #6cc5fd;}
+.color-6{color: #aa66cc;}
+.color-8{color: #cc0000;}
+.color-9{color: #cc0068;}
+
+.gameColor-w{color: #ffffff;}
+.gameColor-r{color: #ff4646;}
+.gameColor-g{color: #afff48;}
+.gameColor-y{color: #ffbb33;}
+.gameColor-b{color: #2CB0FD;}
+
+/* todo: more game colors */
+
+* {
+  font-family: 'Rajdhani', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.no-grow {
+  flex-grow: 0;
+}
+
+em {
+  font-style: normal;
+}
+
+#app {
+  font-family: 'Rajdhani', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--text);
+}
+
+/* Message history box: fully hidden by design. Events still fire (the Vue app
+   keeps receiving chat:addMessage etc.), we just never render the scrollback.
+   !important beats any inline display the app sets via v-show. */
+.chat-window {
+  display: none !important;
+}
+
+
+.chat-messages {
+  position: relative;
+  height: 95%;
+  font-size: 1.8vh;
+  margin: 1%;
+
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+
+.chat-input {
+  font-size: 1.4vh;
+  position: absolute;
+
+  top: 7%;                 /* sit lower on screen, away from the top edge */
+  left: 0.8%;
+  width: 20%;
+  max-width: 440px;
+  box-sizing: border-box;
+
+  /* Slide in from the left on open, out on close. The Vue app toggles the INNER
+     div.input with v-show (display:none), which can't be transitioned — so we
+     keep that inner box always displayed (below) and animate THIS outer element
+     via transform/opacity, toggled by the .lc-open class (set from ui.html by
+     watching the inner box's display). */
+  transform: translateX(-160%);
+  opacity: 0;
+  pointer-events: none;
+  /* base transition = the CLOSING (slide-out) one: slower so it eases out */
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+  will-change: transform;
+}
+
+.chat-input.lc-open {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+  /* opening (slide-in) stays snappy */
+  transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.2s ease;
+}
+
+.chat-input > div.input {
+  position: relative;
+  display: flex !important;  /* neutralise v-show so the box slides out instead of vanishing */
+  align-items: stretch;
+  box-sizing: border-box;   /* match .suggestions so the two boxes align */
+  width: 100%;
+  background-color: var(--input-bg);
+  border: 0.1vh dashed var(--border);   /* house dialog dashed border */
+  border-radius: var(--radius);
+  box-shadow: var(--inset-glow);
+}
+
+/* When suggestions are showing, square off the input's bottom so it fuses
+   seamlessly with the list hanging below it (one continuous panel). */
+.chat-input > div.input:not(:last-child) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.chat-hide-state {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-left: 0.05vw;
+  font-size: 1.3vh;
+  color: var(--text-dim);
+}
+
+.prefix {
+  font-size: 1.5vh;
+  /*position: absolute;
+  top: 0%;*/
+  height: 100%;
+  vertical-align: middle;
+  line-height: 2.6vh;   /* match the compact input box height for centering */
+  padding-left: 0.7vh;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+  color: var(--accent-soft);
+  text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.35);
+  display: inline-block;
+}
+
+textarea {
+  font-size: 1.3vh;
+  line-height: 1.6vh;
+  display: block;
+  box-sizing: content-box;
+  padding: 0.5vh 0.6vh;
+  color: var(--text);
+  border-width: 0;
+  height: 1.6vh;
+  min-height: 1.6vh;
+  resize: none;            /* kill the drag handle + auto-grow weirdness */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  background-color: transparent;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+textarea:focus, input:focus {
+    outline: none;
+}
+
+.msg {
+  margin-bottom: 0.28%;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.multiline {
+  margin-left: 4%;
+  text-indent: -1.2rem;
+  white-space: pre-line;
+}
+
+.suggestions {
+  list-style-type: none;
+  padding: 0.6vh 0.7vh;
+  font-size: 1.35vh;
+  box-sizing: border-box;
+  color: var(--text);
+  background-color: var(--input-bg);
+  border: 0.1vh dashed var(--border);   /* match the input box above */
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  box-shadow: var(--inset-glow);
+  width: 100%;
+}
+
+.help {
+  color: var(--text-dim);
+}
+
+.disabled {
+  color: var(--text-dim);
+}
+
+.suggestion {
+  margin-bottom: 0.5%;
+}
+
+/* command name (first span in the <p>, no .param class) pops in the accent,
+   in the mono "values" face */
+.suggestion p > span:not(.param),
+.suggestion .no-grow,
+.suggestion em {
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--accent-soft);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* parameter hints  e.g. /giveitem [id] [amount]  — dim mono, kept visible */
+.suggestion .param {
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--text-dim);
+}
+
+/* per-command / per-param help line under the name */
+.suggestion .help {
+  display: block;
+  color: var(--text-dim);
+}
+
+.hidden {
+  opacity: 0;
+}
+
+.hidden.animated {
+  transition: opacity 1s;
+}

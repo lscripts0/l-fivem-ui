@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import Box from '@mui/material/Box'
 import { useNuiEvent } from './lib/nui'
+import { lockChat, unlockChat } from './lib/chatlock'
 import type {
   AnnounceData,
   ConversationData,
@@ -29,7 +30,6 @@ import Announce from './components/Announce'
 import MissionText from './components/MissionText'
 import Warn from './components/Warn'
 import Progress from './components/Progress'
-import Chat from './components/Chat'
 import Dialog from './components/Dialog'
 import KeyConfirm from './components/KeyConfirm'
 import KeyLegend from './components/KeyLegend'
@@ -280,13 +280,17 @@ export default function App() {
     }))
   )
   useNuiEvent('pinpad:close', () => setPinPad(null))
-  useNuiEvent<RadialData>('radial:open', (data) =>
+  useNuiEvent<RadialData>('radial:open', (data) => {
+    lockChat()
     setRadial((prev) => ({
       data: { items: data.items, depth: data.depth },
       nonce: (prev?.nonce ?? 0) + 1
     }))
-  )
-  useNuiEvent('radial:close', () => setRadial(null))
+  })
+  useNuiEvent('radial:close', () => {
+    unlockChat()
+    setRadial(null)
+  })
   useNuiEvent<CountdownData>('countdown:tick', (data) => {
     if (countdownHideTimer.current !== null) {
       window.clearTimeout(countdownHideTimer.current)
@@ -364,7 +368,6 @@ export default function App() {
       }}
     >
       <PaintFilters />
-      <Chat />
       {menuState && (
         <Menu key={menuState.nonce} menu={menuState.menu} />
       )}

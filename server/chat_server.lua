@@ -8,14 +8,17 @@ RegisterServerEvent('chat:removeSuggestion')
 RegisterServerEvent('_chat:messageEntered')
 RegisterServerEvent('chat:clear')
 RegisterServerEvent('__cfx_internal:commandFallback')
+
 RegisterNetEvent('playerJoining')
 
-exports('addChatMessage', function(target, message)
+exports('addMessage', function(target, message)
     if not message then
         message = target
         target = -1
     end
+
     if not target or not message then return end
+
     TriggerClientEvent('chat:addMessage', target, message)
 end)
 
@@ -28,6 +31,7 @@ exports('registerMessageHook', function(hook)
         fn = hook,
         resource = resource
     }
+
     hookIdx = hookIdx + 1
 end)
 
@@ -36,11 +40,13 @@ local modes = {}
 local function getMatchingPlayers(seObject)
     local players = GetPlayers()
     local retval = {}
+
     for _, v in ipairs(players) do
         if IsPlayerAceAllowed(v, seObject) then
             retval[#retval + 1] = v
         end
     end
+
     return retval
 end
 
@@ -50,6 +56,7 @@ exports('registerMode', function(modeData)
     end
 
     local resource = GetInvokingResource()
+
     modes[modeData.name] = modeData
     modes[modeData.name].resource = resource
 
@@ -74,23 +81,30 @@ end)
 
 local function unregisterHooks(resource)
     local toRemove = {}
+
     for k, v in pairs(hooks) do
         if v.resource == resource then
             table.insert(toRemove, k)
         end
     end
+
     for _, v in ipairs(toRemove) do
         hooks[v] = nil
     end
 
     toRemove = {}
+
     for k, v in pairs(modes) do
         if v.resource == resource then
             table.insert(toRemove, k)
         end
     end
+
     for _, v in ipairs(toRemove) do
-        TriggerClientEvent('chat:removeMode', -1, { name = v })
+        TriggerClientEvent('chat:removeMode', -1, {
+            name = v
+        })
+
         modes[v] = nil
     end
 end
@@ -107,12 +121,13 @@ local function routeMessage(source, author, message, mode, fromConsole)
         mode = mode
     }
 
-    if author ~= '' then
+    if author ~= "" then
         outMessage.args = { author, message }
     end
 
     if mode and modes[mode] then
         local modeData = modes[mode]
+
         if modeData.seObject and not IsPlayerAceAllowed(source, modeData.seObject) then
             return
         end
@@ -130,6 +145,7 @@ local function routeMessage(source, author, message, mode, fromConsole)
                     if not outMessage.params then
                         outMessage.params = {}
                     end
+
                     for pk, pv in pairs(v) do
                         outMessage.params[pk] = pv
                     end
@@ -159,7 +175,9 @@ local function routeMessage(source, author, message, mode, fromConsole)
     end
 
     if modes[mode] then
-        modes[mode].cb(source, outMessage, hookRef)
+        local m = modes[mode]
+
+        m.cb(source, outMessage, hookRef)
     end
 
     if messageCanceled then
@@ -187,12 +205,17 @@ AddEventHandler('_chat:messageEntered', function(author, color, message, mode)
     if not message or not author then
         return
     end
+
+    local source = source
+
     routeMessage(source, author, message, mode)
 end)
 
 AddEventHandler('__cfx_internal:commandFallback', function(command)
     local name = GetPlayerName(source)
+
     routeMessage(source, name, '/' .. command, nil, true)
+
     CancelEvent()
 end)
 
@@ -200,6 +223,7 @@ AddEventHandler('playerJoining', function()
     if GetConvarInt('chat_showJoins', 1) == 0 then
         return
     end
+
     TriggerClientEvent('chatMessage', -1, '', { 255, 255, 255 }, '^2* ' .. GetPlayerName(source) .. ' joined.')
 end)
 
@@ -207,7 +231,8 @@ AddEventHandler('playerDropped', function(reason)
     if GetConvarInt('chat_showQuits', 1) == 0 then
         return
     end
-    TriggerClientEvent('chatMessage', -1, '', { 255, 255, 255 }, '^2* ' .. GetPlayerName(source) .. ' left (' .. reason .. ')')
+
+    TriggerClientEvent('chatMessage', -1, '', { 255, 255, 255 }, '^2* ' .. GetPlayerName(source) ..' left (' .. reason .. ')')
 end)
 
 RegisterCommand('say', function(source, args, rawCommand)
@@ -215,23 +240,27 @@ RegisterCommand('say', function(source, args, rawCommand)
 end)
 
 local function refreshCommands(player)
-    if not GetRegisteredCommands then return end
-    local registeredCommands = GetRegisteredCommands()
-    local suggestions = {}
-    for _, command in ipairs(registeredCommands) do
-        if IsPlayerAceAllowed(player, ('command.%s'):format(command.name)) then
-            table.insert(suggestions, {
-                name = '/' .. command.name,
-                help = ''
-            })
+    if GetRegisteredCommands then
+        local registeredCommands = GetRegisteredCommands()
+
+        local suggestions = {}
+
+        for _, command in ipairs(registeredCommands) do
+            if IsPlayerAceAllowed(player, ('command.%s'):format(command.name)) then
+                table.insert(suggestions, {
+                    name = '/' .. command.name,
+                    help = ''
+                })
+            end
         end
+
+        TriggerClientEvent('chat:addSuggestions', player, suggestions)
     end
-    TriggerClientEvent('chat:addSuggestions', player, suggestions)
 end
 
 AddEventHandler('chat:init', function()
-    local src = source
-    refreshCommands(src)
+    local source = source
+    refreshCommands(source)
 
     for _, modeData in pairs(modes) do
         local clObj = {
@@ -241,14 +270,16 @@ AddEventHandler('chat:init', function()
             isChannel = modeData.isChannel,
             isGlobal = modeData.isGlobal,
         }
-        if not modeData.seObject or IsPlayerAceAllowed(src, modeData.seObject) then
-            TriggerClientEvent('chat:addMode', src, clObj)
+
+        if not modeData.seObject or IsPlayerAceAllowed(source, modeData.seObject) then
+            TriggerClientEvent('chat:addMode', source, clObj)
         end
     end
 end)
 
-AddEventHandler('onServerResourceStart', function()
+AddEventHandler('onServerResourceStart', function(resName)
     Wait(500)
+
     for _, player in ipairs(GetPlayers()) do
         refreshCommands(player)
     end
