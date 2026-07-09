@@ -5,7 +5,7 @@ local function playSound(kind)
     if not Config.Sounds.enabled then return end
     local sound = Config.Sounds[kind]
     if sound then
-        PlaySoundFrontend(sound.name, sound.ref, true, 0)
+        PlaySoundFrontend(-1, sound.name, sound.ref, true)
     end
 end
 
@@ -192,6 +192,29 @@ local function announce(title, subtitle, duration)
     SetTimeout(math.floor(duration), function()
         playSound('announceHide')
     end)
+end
+
+local missionTextOpen = false
+
+local function showMissionText(text, duration)
+    if type(text) == 'table' then
+        local data = text
+        text = data.text
+        duration = data.duration
+    end
+    if type(text) ~= 'string' or text == '' then return end
+    missionTextOpen = true
+    SendNUIMessage({
+        action = 'missiontext:show',
+        text = text,
+        duration = duration or Config.MissionTextDuration
+    })
+end
+
+local function hideMissionText()
+    if not missionTextOpen then return end
+    missionTextOpen = false
+    SendNUIMessage({ action = 'missiontext:hide' })
 end
 
 local holdTextUIOpen = false
@@ -1067,6 +1090,9 @@ exports('HideHoldTextUI', hideHoldTextUI)
 exports('IsHoldTextUIOpen', function() return holdTextUIOpen end)
 exports('Notify', notify)
 exports('Announce', announce)
+exports('MissionText', showMissionText)
+exports('HideMissionText', hideMissionText)
+exports('IsMissionTextOpen', function() return missionTextOpen end)
 exports('Warn', showWarn)
 exports('Skillbar', function(data) return startMinigame('skillbar', data) end)
 exports('Sequence', function(data) return startMinigame('sequence', data) end)
@@ -1117,6 +1143,10 @@ end)
 
 RegisterNetEvent('l-fivem-ui:announce', function(title, subtitle, duration)
     announce(title, subtitle, duration)
+end)
+
+RegisterNetEvent('l-fivem-ui:missiontext', function(text, duration)
+    showMissionText(text, duration)
 end)
 
 RegisterNetEvent('l-fivem-ui:warn', function(message, title, author)

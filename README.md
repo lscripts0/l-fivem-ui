@@ -1,6 +1,6 @@
 # l-fivem-ui
 
-UI kit for FiveM: arrow key menus, npc conversations, radial menu, text ui, hold text ui, notifications, announce banner, fullscreen warn, alert/input/form dialogs, pin pad, key confirmations, progress bar and circle, skillcheck minigames, countdown, objectives tracker, a grouped key legend and a full chat replacement. Built with React, TypeScript and MUI.
+UI kit for FiveM: arrow key menus, npc conversations, radial menu, text ui, hold text ui, notifications, announce banner, mission text, fullscreen warn, alert/input/form dialogs, pin pad, code pad, key confirmations, progress bar and circle, skillcheck minigames, countdown, objectives tracker, a grouped key legend and a full chat replacement. Built with React, TypeScript and MUI.
 
 ## Install
 
@@ -170,6 +170,24 @@ exports['l-fivem-ui']:Announce('Los Santos', 'Welcome to the city', 8000)  -- sh
 ```
 
 A big centered panel at the top edge of the screen that fades in and out, for zone arrivals, event starts and similar moments.
+
+## Mission Text
+
+A GTA style subtitle at the bottom center of the screen: white text with a dark outline that fades in, holds and fades out on its own, for objectives, instructions and mission lines. `*text*` between stars is shown in the accent color.
+
+```lua
+exports['l-fivem-ui']:MissionText({
+    text = 'Get to the *marina* before the timer runs out.',
+    duration = 5000               -- optional ms, defaults to config
+})
+
+exports['l-fivem-ui']:MissionText('Head to the *docks*.', 5000)  -- short form
+
+exports['l-fivem-ui']:HideMissionText()
+exports['l-fivem-ui']:IsMissionTextOpen()
+```
+
+Calling it again replaces the current line. The default duration is set in `config.lua` (`Config.MissionTextDuration`).
 
 ## Warn
 
@@ -454,6 +472,7 @@ Everything is triggered through exports only. On the server the exports take the
 ```lua
 exports['l-fivem-ui']:Notify(playerId, { message = 'Money received', type = 'success', title = 'Store' })
 exports['l-fivem-ui']:Announce(-1, { title = 'Los Santos', subtitle = 'Welcome to the city' })
+exports['l-fivem-ui']:MissionText(playerId, 'Head to the *docks*.', 5000)
 exports['l-fivem-ui']:Warn(playerId, { message = 'You broke the rules.', author = 'Admin' })
 ```
 

@@ -8,6 +8,11 @@ local function announce(playerId, title, subtitle, duration)
     TriggerClientEvent('l-fivem-ui:announce', playerId, title, subtitle, duration)
 end
 
+local function missionText(playerId, text, duration)
+    if not playerId then return end
+    TriggerClientEvent('l-fivem-ui:missiontext', playerId, text, duration)
+end
+
 local function warn(playerId, message, title, author)
     if not playerId then return end
     TriggerClientEvent('l-fivem-ui:warn', playerId, message, title, author)
@@ -40,6 +45,7 @@ end
 
 exports('Notify', notify)
 exports('Announce', announce)
+exports('MissionText', missionText)
 exports('Warn', warn)
 exports('Countdown', countdown)
 exports('CancelCountdown', cancelCountdown)

@@ -56,6 +56,11 @@ export interface AnnounceData {
   duration?: number
 }
 
+export interface MissionTextData {
+  text: string
+  duration?: number
+}
+
 export interface WarnData {
   message: string
   title?: string

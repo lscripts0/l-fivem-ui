@@ -11,6 +11,7 @@ import type {
   MinigameData,
   HoldTextUIData,
   MenuData,
+  MissionTextData,
   NotifyData,
   ObjectivesData,
   PinPadData,
@@ -25,6 +26,7 @@ import TextUI from './components/TextUI'
 import HoldTextUI from './components/HoldTextUI'
 import Notify from './components/Notify'
 import Announce from './components/Announce'
+import MissionText from './components/MissionText'
 import Warn from './components/Warn'
 import Progress from './components/Progress'
 import Chat from './components/Chat'
@@ -63,6 +65,8 @@ export default function App() {
   const [holdTextUIHiding, setHoldTextUIHiding] = useState(false)
   const [toasts, setToasts] = useState<ToastItem[]>([])
   const [announce, setAnnounce] = useState<AnnounceState | null>(null)
+  const [missionText, setMissionText] = useState<{ data: MissionTextData; nonce: number } | null>(null)
+  const [missionTextHiding, setMissionTextHiding] = useState(false)
   const [warn, setWarn] = useState<WarnData | null>(null)
   const [warnHiding, setWarnHiding] = useState(false)
   const [progress, setProgress] = useState<ProgressState | null>(null)
@@ -87,6 +91,18 @@ export default function App() {
   const keyLegendHideTimer = useRef<number | null>(null)
   const objectivesHideTimer = useRef<number | null>(null)
   const countdownHideTimer = useRef<number | null>(null)
+  const missionTextHideTimer = useRef<number | null>(null)
+  const missionTextAutoTimer = useRef<number | null>(null)
+
+  const hideMissionText = () => {
+    if (missionTextHideTimer.current !== null) return
+    setMissionTextHiding(true)
+    missionTextHideTimer.current = window.setTimeout(() => {
+      missionTextHideTimer.current = null
+      setMissionText(null)
+      setMissionTextHiding(false)
+    }, 250)
+  }
 
   const hideWarn = () => {
     if (warnHideTimer.current !== null) return
@@ -150,6 +166,30 @@ export default function App() {
   })
   useNuiEvent<NotifyData>('notify', addToast)
   useNuiEvent<AnnounceData>('announce', showAnnounce)
+  useNuiEvent<MissionTextData>('missiontext:show', (data) => {
+    if (missionTextHideTimer.current !== null) {
+      window.clearTimeout(missionTextHideTimer.current)
+      missionTextHideTimer.current = null
+    }
+    if (missionTextAutoTimer.current !== null) {
+      window.clearTimeout(missionTextAutoTimer.current)
+      missionTextAutoTimer.current = null
+    }
+    setMissionTextHiding(false)
+    setMissionText((prev) => ({ data: { text: data.text, duration: data.duration }, nonce: (prev?.nonce ?? 0) + 1 }))
+    const dur = data.duration && data.duration > 0 ? data.duration : 5000
+    missionTextAutoTimer.current = window.setTimeout(() => {
+      missionTextAutoTimer.current = null
+      hideMissionText()
+    }, dur)
+  })
+  useNuiEvent('missiontext:hide', () => {
+    if (missionTextAutoTimer.current !== null) {
+      window.clearTimeout(missionTextAutoTimer.current)
+      missionTextAutoTimer.current = null
+    }
+    hideMissionText()
+  })
   useNuiEvent<WarnData>('warn:show', (data) => {
     if (warnHideTimer.current !== null) {
       window.clearTimeout(warnHideTimer.current)
@@ -332,6 +372,7 @@ export default function App() {
       {holdTextUI && <HoldTextUI key={holdTextUI.nonce} data={holdTextUI.data} hiding={holdTextUIHiding} />}
       <Notify toasts={toasts} onDone={removeToast} />
       {announce && <Announce key={announce.nonce} data={announce.data} onDone={() => setAnnounce(null)} />}
+      {missionText && <MissionText key={missionText.nonce} data={missionText.data} hiding={missionTextHiding} />}
       {warn && <Warn data={warn} hiding={warnHiding} />}
       {progress && <Progress key={progress.nonce} data={progress.data} />}
       {dialog && <Dialog key={dialog.nonce} data={dialog.data} onDone={() => setDialog(null)} />}

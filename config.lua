@@ -30,6 +30,10 @@ Config.NotifyDuration = 4000
 -- Default announce banner duration in milliseconds (can be overridden per call).
 Config.AnnounceDuration = 5000
 
+-- Default mission text (GTA style bottom-center subtitle) duration in milliseconds
+-- (can be overridden per call).
+Config.MissionTextDuration = 5000
+
 -- How long a key must be held for the hold text ui, in milliseconds
 -- (default, can be overridden per call).
 Config.HoldTextUIDuration = 1000
@@ -81,6 +85,8 @@ Config.TxAdmin = {
 
 -- Frontend sounds played on menu actions.
 -- Set enabled to false to mute everything, or swap name/ref per action.
+-- GTA built-in frontend sounds (no audio files needed), same house set the other
+-- lscripts resources use. Called as PlaySoundFrontend(-1, name, ref, true).
 Config.Sounds = {
     enabled = true,
     open   = { name = 'SELECT', ref = 'HUD_FRONTEND_DEFAULT_SOUNDSET' },
@@ -90,7 +96,7 @@ Config.Sounds = {
     change = { name = 'NAV_LEFT_RIGHT', ref = 'HUD_FRONTEND_DEFAULT_SOUNDSET' },
     select = { name = 'SELECT', ref = 'HUD_FRONTEND_DEFAULT_SOUNDSET' },
     -- Set an entry to false to mute just that action.
-    notify = { name = 'DELETE', ref = 'HUD_DEATHMATCH_SOUNDSET' },
+    notify = { name = 'CHECKPOINT_NORMAL', ref = 'HUD_MINI_GAME_SOUNDSET' },
     notifyHide = false,
     announce = { name = 'SELECT', ref = 'HUD_FRONTEND_DEFAULT_SOUNDSET' },
     announceHide = false,
