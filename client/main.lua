@@ -595,13 +595,11 @@ end
 
 local function startProgress(data, duration)
     local label, position, progressType
-    local disableMove = false
     if type(data) == 'table' then
         label = data.label
         duration = data.duration
         position = data.position
         progressType = data.type
-        disableMove = data.disableMove == true
     else
         label = data
     end
@@ -617,17 +615,6 @@ local function startProgress(data, duration)
         position = position or Config.Progress.position,
         progressType = progressType == 'circle' and 'circle' or 'bar'
     })
-    if disableMove then
-        CreateThread(function()
-            while progressActive and progressToken == token do
-                DisableControlAction(0, 30, true)
-                DisableControlAction(0, 31, true)
-                DisableControlAction(0, 21, true)
-                DisableControlAction(0, 22, true)
-                Wait(0)
-            end
-        end)
-    end
     SetTimeout(math.floor(duration), function()
         if not progressActive or progressToken ~= token then return end
         progressActive = false

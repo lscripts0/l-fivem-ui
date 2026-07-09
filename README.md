@@ -442,8 +442,7 @@ exports['l-fivem-ui']:Progress({
     label = 'Repairing vehicle',
     duration = 5000,
     type = 'bar',                  -- 'bar' (segmented) | 'circle'
-    position = 'bottom-center',    -- optional, overrides config (8 spots like the text ui)
-    disableMove = false            -- optional, true blocks movement/sprint/jump while running
+    position = 'bottom-center'     -- optional, overrides config (8 spots like the text ui)
 })
 
 exports['l-fivem-ui']:CancelProgress()   -- stop it early
