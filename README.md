@@ -280,7 +280,7 @@ The code comes back as a string so leading zeros survive.
 
 ## Key Confirm
 
-A confirmation that slides in from the side and expires with a visible timeout bar. Does not block the player; the keys are polled as control hashes.
+A confirmation that slides in from the side and expires with a visible timeout bar. Does not block the player; the keys are polled as FiveM control ids.
 
 ```lua
 exports['l-fivem-ui']:KeyConfirm({
@@ -288,11 +288,11 @@ exports['l-fivem-ui']:KeyConfirm({
     position = 'right',            -- 'left' | 'right'
     duration = 10000,              -- optional, ms until timeout
     hold = 1000,                   -- optional, keys must be held this long instead of a press
-    acceptKey = 38,        -- FiveM control id
-    acceptLabel = 'G',             -- badge letter
+    acceptKey = 38,                -- FiveM control id (38 = E)
+    acceptLabel = 'E',             -- badge letter
     acceptText = 'Accept',         -- optional row text
-    declineKey = 47,       -- optional second key
-    declineLabel = 'H',
+    declineKey = 47,               -- optional second key (47 = G)
+    declineLabel = 'G',
     declineText = 'Decline',
     onAccept = function() end,
     onDecline = function() end,
