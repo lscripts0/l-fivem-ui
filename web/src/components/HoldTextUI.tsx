@@ -72,7 +72,7 @@ export default function HoldTextUI({ data, hiding }: HoldTextUIProps) {
         <Typography
           sx={{
             position: 'relative',
-            fontFamily: fonts.display,
+            fontFamily: fonts.mono,
             fontWeight: 400,
             fontSize: '0.7rem',
             color: '#ffffff'

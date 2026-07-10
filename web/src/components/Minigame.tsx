@@ -43,7 +43,7 @@ function KeyBadge({ label, state, size }: { label: string; state: 'idle' | 'acti
     >
       <Typography
         sx={{
-          fontFamily: fonts.display,
+          fontFamily: fonts.mono,
           fontSize: size ? '0.9rem' : '0.75rem',
           color: state === 'done' ? '#0a0a0a' : state === 'active' ? '#ffffff' : colors.textDim
         }}

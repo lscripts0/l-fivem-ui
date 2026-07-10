@@ -44,7 +44,7 @@ export default function Objectives({ data, hiding }: ObjectivesProps) {
         <>
           <Typography
             sx={{
-              fontFamily: fonts.display,
+              fontFamily: fonts.mono,
               fontWeight: 600,
               fontSize: '0.72rem',
               textTransform: 'uppercase',

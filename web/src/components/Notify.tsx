@@ -91,7 +91,6 @@ function Toast({ toast, onDone, slide }: { toast: ToastItem; onDone: (id: number
           flexShrink: 0,
           background: 'rgba(255, 255, 255, 0.12)',
           borderRadius: '0.08rem',
-          boxShadow: `0 0 0.5rem ${tc}`,
           overflow: 'hidden'
         }}
       >
@@ -137,7 +136,7 @@ function Toast({ toast, onDone, slide }: { toast: ToastItem; onDone: (id: number
           <>
             <Typography
               sx={{
-                fontFamily: fonts.display,
+                fontFamily: fonts.mono,
                 fontWeight: 700,
                 fontSize: '0.66rem',
                 textTransform: 'uppercase',

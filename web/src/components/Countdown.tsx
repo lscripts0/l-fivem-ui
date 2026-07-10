@@ -41,7 +41,7 @@ export default function Countdown({ data, hiding }: CountdownProps) {
     >
       <Typography
         sx={{
-          fontFamily: fonts.display,
+          fontFamily: fonts.mono,
           fontWeight: 400,
           fontSize: '2.6rem',
           lineHeight: 1,

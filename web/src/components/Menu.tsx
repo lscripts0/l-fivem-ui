@@ -148,7 +148,7 @@ export default function Menu({ menu }: MenuProps) {
               '& .MuiSlider-rail': { backgroundColor: 'rgba(255, 255, 255, 0.25)' }
             }}
           />
-          <Typography sx={{ fontSize: '0.75rem', color: colors.textDim, minWidth: '1.5rem', textAlign: 'right' }}>
+          <Typography sx={{ fontFamily: fonts.mono, fontSize: '0.75rem', color: colors.textDim, minWidth: '1.5rem', textAlign: 'right' }}>
             {item.value ?? min}
           </Typography>
         </>
@@ -187,7 +187,7 @@ export default function Menu({ menu }: MenuProps) {
     return (
       <>
         {item.rightLabel && (
-          <Typography sx={{ fontSize: '0.78rem', color: colors.textDim }}>{item.rightLabel}</Typography>
+          <Typography sx={{ fontFamily: fonts.mono, fontSize: '0.78rem', color: colors.textDim }}>{item.rightLabel}</Typography>
         )}
         {item.arrow && (
           <Typography sx={{ fontFamily: fonts.body, fontSize: '1.3rem', color: colors.textDim, lineHeight: 1, mt: '-0.1rem' }}>
@@ -213,7 +213,7 @@ export default function Menu({ menu }: MenuProps) {
         <Box sx={{ pt: '0.65rem' }}>
           <Typography
             sx={{
-              fontFamily: fonts.display,
+              fontFamily: fonts.mono,
               fontWeight: 600,
               fontSize: '1rem',
               textTransform: 'uppercase',
@@ -341,7 +341,7 @@ export default function Menu({ menu }: MenuProps) {
               <Ornament />
               <Typography
                 sx={{
-                  fontFamily: fonts.display,
+                  fontFamily: fonts.mono,
                   fontSize: '0.6rem',
                   textAlign: 'center',
                   color: colors.textDim,

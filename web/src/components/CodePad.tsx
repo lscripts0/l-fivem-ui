@@ -39,7 +39,7 @@ const keySx: SxProps = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontFamily: fonts.display,
+  fontFamily: fonts.mono,
   fontSize: '1.1rem',
   color: colors.text,
   border: `var(--hairline) solid ${colors.panelEdge}`,
@@ -135,7 +135,7 @@ export default function CodePad({ data, onDone }: CodePadProps) {
           <>
             <Typography
               sx={{
-                fontFamily: fonts.display,
+                fontFamily: fonts.mono,
                 fontWeight: 600,
                 fontSize: '1.05rem',
                 textTransform: 'uppercase',
@@ -169,7 +169,7 @@ export default function CodePad({ data, onDone }: CodePadProps) {
                   boxShadow: active ? colors.innerGlow : 'none'
                 }}
               >
-                <Typography sx={{ fontFamily: fonts.display, fontSize: '1.15rem', color: colors.text }}>
+                <Typography sx={{ fontFamily: fonts.mono, fontSize: '1.15rem', color: colors.text }}>
                   {code[index] ?? ''}
                 </Typography>
               </Box>
@@ -184,7 +184,7 @@ export default function CodePad({ data, onDone }: CodePadProps) {
           ))}
           <ButtonBase
             onClick={clear}
-            sx={{ ...keySx, fontFamily: fonts.display, fontSize: '0.7rem', textTransform: 'uppercase' } as SxProps}
+            sx={{ ...keySx, fontSize: '0.7rem', textTransform: 'uppercase' } as SxProps}
           >
             C
           </ButtonBase>

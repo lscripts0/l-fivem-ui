@@ -148,7 +148,7 @@ export default function PinPad({ data, onDone }: PinPadProps) {
           <>
             <Typography
               sx={{
-                fontFamily: fonts.display,
+                fontFamily: fonts.mono,
                 fontWeight: 600,
                 fontSize: '1.05rem',
                 textTransform: 'uppercase',
@@ -189,7 +189,7 @@ export default function PinPad({ data, onDone }: PinPadProps) {
                 >
                   <Typography
                     sx={{
-                      fontFamily: fonts.display,
+                      fontFamily: fonts.mono,
                       fontWeight: 400,
                       fontSize: '1.25rem',
                       color: active ? colors.text : colors.textDim

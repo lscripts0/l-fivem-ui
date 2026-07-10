@@ -53,7 +53,7 @@ export default function KeyLegend({ data, hiding }: KeyLegendProps) {
               backgroundColor: 'rgba(0, 0, 0, 0.55)'
             }}
           >
-            <Typography sx={{ fontFamily: fonts.display, fontWeight: 400, fontSize: '0.7rem', color: '#ffffff', whiteSpace: 'nowrap', lineHeight: 1 }}>
+            <Typography sx={{ fontFamily: fonts.mono, fontWeight: 400, fontSize: '0.7rem', color: '#ffffff', whiteSpace: 'nowrap', lineHeight: 1 }}>
               {entry.key}
             </Typography>
           </Box>

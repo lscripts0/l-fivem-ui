@@ -35,9 +35,9 @@ export default function Announce({ data, onDone }: AnnounceProps) {
         transform: shown ? 'translateX(-50%)' : 'translateX(-50%) translateY(-0.6rem)',
         opacity: shown ? 1 : 0,
         transition: 'opacity 300ms ease-out, transform 300ms ease-out',
-        minWidth: '30rem',
-        maxWidth: '50rem',
-        px: '2.6rem',
+        minWidth: '22rem',
+        maxWidth: '38rem',
+        px: '2rem',
         py: '0.4rem',
         pb: '0.5rem',
         textAlign: 'center',
@@ -65,7 +65,7 @@ export default function Announce({ data, onDone }: AnnounceProps) {
       <Typography
         sx={{
           position: 'relative',
-          fontFamily: fonts.display,
+          fontFamily: fonts.mono,
           fontWeight: 600,
           fontSize: '1.05rem',
           textTransform: 'uppercase',

@@ -73,7 +73,7 @@ export default function Progress({ data }: ProgressProps) {
               left: '50%',
               top: '50%',
               transform: 'translate(-50%, -50%)',
-              fontFamily: fonts.display,
+              fontFamily: fonts.mono,
               fontSize: '0.72rem',
               color: colors.text
             }}
@@ -123,7 +123,7 @@ export default function Progress({ data }: ProgressProps) {
         >
           {data.label ?? ''}
         </Typography>
-        <Typography sx={{ fontFamily: fonts.display, fontSize: '0.68rem', color: colors.text, textShadow }}>
+        <Typography sx={{ fontFamily: fonts.mono, fontSize: '0.68rem', color: colors.text, textShadow }}>
           {percent}%
         </Typography>
       </Box>

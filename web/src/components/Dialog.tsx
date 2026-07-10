@@ -337,13 +337,12 @@ export default function Dialog({ data, onDone }: DialogProps) {
           px: '1.1rem',
           py: '0.8rem',
           isolation: 'isolate',
-          ...hexPanel,
-          border: 'var(--hairline) dashed var(--ui-panel-edge, rgba(255,255,255,0.15))'
+          ...hexPanel
         }}
       >
         <Typography
           sx={{
-            fontFamily: fonts.display,
+            fontFamily: fonts.mono,
             fontWeight: 700,
             fontSize: '1.05rem',
             textTransform: 'uppercase',

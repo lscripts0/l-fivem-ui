@@ -42,7 +42,7 @@ function KeyRow({ label, text, fill }: { label: string; text: string; fill: numb
           }}
         />
         <Typography
-          sx={{ position: 'relative', fontFamily: fonts.display, fontWeight: 400, fontSize: '0.7rem', color: '#ffffff' }}
+          sx={{ position: 'relative', fontFamily: fonts.mono, fontWeight: 400, fontSize: '0.7rem', color: '#ffffff' }}
         >
           {label}
         </Typography>

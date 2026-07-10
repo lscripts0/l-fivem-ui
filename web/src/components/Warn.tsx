@@ -52,7 +52,7 @@ export default function Warn({ data, hiding }: WarnProps) {
       >
         <Typography
           sx={{
-            fontFamily: fonts.display,
+            fontFamily: fonts.mono,
             fontWeight: 400,
             fontSize: '1.3rem',
             textTransform: 'uppercase',

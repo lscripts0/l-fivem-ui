@@ -55,7 +55,7 @@ export default function Conversation({ data }: ConversationProps) {
         <>
           <Typography
             sx={{
-              fontFamily: fonts.display,
+              fontFamily: fonts.mono,
               fontWeight: 600,
               fontSize: '0.95rem',
               textTransform: 'uppercase',

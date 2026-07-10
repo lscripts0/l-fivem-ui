@@ -19,7 +19,7 @@ export const colors = {
 
 export const hexPanel = {
   background: colors.panel,
-  border: 'var(--hairline) solid var(--ui-panel-edge, rgba(255,255,255,0.15))',
+  border: 'var(--hairline) dashed var(--ui-panel-edge, rgba(255,255,255,0.15))',
   borderRadius: '0.25rem',
   boxShadow: 'inset 0 0 1.7vh var(--ui-glow, rgba(255,255,255,0.15)), 0 0.4rem 1.2rem rgba(0,0,0,0.45)'
 }

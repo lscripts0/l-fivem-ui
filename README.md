@@ -104,6 +104,8 @@ exports['l-fivem-ui']:IsRadialMenuOpen()
 
 An item with its own `items` table opens that list as a sub wheel instead of selecting (marked with a small arrow next to the label, nest as deep as you want). Like in the menus, every item can carry its own `onSelect`; the top level `onSelect` is the fallback for items without one. Icons take Font Awesome classes like the menu items.
 
+Where the wheel opens is set in `config.lua`: `Config.RadialPosition` takes `'center'`, `'left'` or `'right'` (default `'right'`).
+
 ## Text UI
 
 ```lua

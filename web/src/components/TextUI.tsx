@@ -52,7 +52,7 @@ export default function TextUI({ data, hiding }: TextUIProps) {
             backgroundColor: 'rgba(0, 0, 0, 0.55)'
           }}
         >
-          <Typography sx={{ fontFamily: fonts.display, fontWeight: 400, fontSize: '0.7rem', color: '#ffffff' }}>
+          <Typography sx={{ fontFamily: fonts.mono, fontWeight: 400, fontSize: '0.7rem', color: '#ffffff' }}>
             {data.key}
           </Typography>
         </Box>
