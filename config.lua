@@ -46,6 +46,9 @@ Config.KeyConfirmDuration = 10000
 -- (default, can be overridden per call).
 Config.ObjectivesPosition = 'right-center'
 
+-- Where the radial menu opens on screen: 'center', 'left' or 'right'.
+Config.RadialPosition = 'right'
+
 -- Segmented progress bar. Start it with the Progress export, stop it early with
 -- CancelProgress, query it with IsProgressActive. There is no in-game cancel key.
 Config.Progress = {

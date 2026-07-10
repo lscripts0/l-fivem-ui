@@ -283,7 +283,7 @@ export default function App() {
   useNuiEvent<RadialData>('radial:open', (data) => {
     lockChat()
     setRadial((prev) => ({
-      data: { items: data.items, depth: data.depth },
+      data: { items: data.items, depth: data.depth, position: data.position },
       nonce: (prev?.nonce ?? 0) + 1
     }))
   })

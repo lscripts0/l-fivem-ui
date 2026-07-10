@@ -802,7 +802,8 @@ local function sendRadialLevel()
     SendNUIMessage({
         action = 'radial:open',
         items = sanitizeRadialItems(currentRadial.stack[#currentRadial.stack]),
-        depth = #currentRadial.stack
+        depth = #currentRadial.stack,
+        position = Config.RadialPosition
     })
 end
 

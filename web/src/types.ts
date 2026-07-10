@@ -150,6 +150,7 @@ export interface RadialItem {
 export interface RadialData {
   items: RadialItem[]
   depth?: number
+  position?: 'center' | 'left' | 'right'
 }
 
 export interface CountdownData {

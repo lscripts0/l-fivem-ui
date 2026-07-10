@@ -8,7 +8,6 @@ import { colors, fonts, hexPanel } from '../theme'
 import { rich } from '../lib/rich'
 import { fetchNui } from '../lib/nui'
 import type { DialogData, FormField } from '../types'
-import Ornament from './Ornament'
 
 interface DialogProps {
   data: DialogData
@@ -36,8 +35,8 @@ const inputSx = {
   background: 'transparent',
   border: 'none',
   outline: 'none',
-  fontFamily: fonts.body,
-  fontSize: '0.8rem',
+  fontFamily: fonts.mono,
+  fontSize: '0.82rem',
   color: colors.text,
   padding: 0,
   resize: 'none' as const,
@@ -47,7 +46,7 @@ const inputSx = {
 const buttonSx = (accent: string, glow: string): SxProps => ({
   flex: 1,
   fontFamily: fonts.display,
-  fontWeight: 400,
+  fontWeight: 600,
   fontSize: '0.72rem',
   textTransform: 'uppercase',
   letterSpacing: 'normal',
@@ -337,23 +336,27 @@ export default function Dialog({ data, onDone }: DialogProps) {
           flexDirection: 'column',
           px: '1.1rem',
           py: '0.8rem',
-          isolation: 'isolate', ...hexPanel
+          isolation: 'isolate',
+          ...hexPanel,
+          border: 'var(--hairline) dashed var(--ui-panel-edge, rgba(255,255,255,0.15))'
         }}
       >
         <Typography
           sx={{
             fontFamily: fonts.display,
-            fontWeight: 600,
+            fontWeight: 700,
             fontSize: '1.05rem',
             textTransform: 'uppercase',
             textAlign: 'center',
+            letterSpacing: '0.04em',
             color: colors.accentSoft,
-            lineHeight: 1.2
+            textShadow: `0 0 1.2vh ${colors.accentSoft}`,
+            lineHeight: 1.2,
+            mb: '0.55rem'
           }}
         >
           {rich(data.title, colors.text)}
         </Typography>
-        <Ornament />
         <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto', pr: '0.3rem', mr: '-0.5rem', ...scrollbarSx }}>
         {data.message && (
           <Typography
