@@ -220,46 +220,8 @@ RegisterNUICallback('loaded', function(data, cb)
   refreshThemes()
 
   chatLoaded = true
-  addSuggestion('/toggleChat', 'set Chat state', {
-    { name = "state", help = "whenactive hidden visible" },
-  })
   cb('ok')
 end)
-
-local CHAT_HIDE_STATES = {
-  SHOW_WHEN_ACTIVE = 0,
-  ALWAYS_SHOW = 1,
-  ALWAYS_HIDE = 2
-}
-
-local kvpEntry = GetResourceKvpString('hideState')
-local chatHideState = kvpEntry and tonumber(kvpEntry) or CHAT_HIDE_STATES.SHOW_WHEN_ACTIVE
-local isFirstHide = true
-if RegisterKeyMapping then
-	RegisterKeyMapping('toggleChat', 'Toggle chat', 'keyboard', 'l')
-end
-
-RegisterCommand('toggleChat', function(source, args, rawCommand)
-  if not args[1] then
-    if chatHideState == CHAT_HIDE_STATES.SHOW_WHEN_ACTIVE then
-      chatHideState = CHAT_HIDE_STATES.ALWAYS_SHOW
-    elseif chatHideState == CHAT_HIDE_STATES.ALWAYS_SHOW then
-      chatHideState = CHAT_HIDE_STATES.ALWAYS_HIDE
-    elseif chatHideState == CHAT_HIDE_STATES.ALWAYS_HIDE then
-      chatHideState = CHAT_HIDE_STATES.SHOW_WHEN_ACTIVE
-    end
-  else
-    if args[1] == "visible" then
-      chatHideState = CHAT_HIDE_STATES.ALWAYS_SHOW
-    elseif args[1] == "hidden" then
-      chatHideState = CHAT_HIDE_STATES.ALWAYS_HIDE
-    elseif args[1] == "whenactive" then
-      chatHideState = CHAT_HIDE_STATES.SHOW_WHEN_ACTIVE
-    end
-  end
-  isFirstHide = false
-  SetResourceKvp('hideState', tostring(chatHideState))
-end, false)
 
 CreateThread(function()
   SetTextChatEnabled(false)
